@@ -14,11 +14,11 @@ consumer_secret = "SyrFqyAn6IzGZdGmv8E9Qq5N20xx41Z6HT99jIGV0SNCnTBIrH"
 class StdOutListener(StreamListener):
 
     def on_data(self, data):
-        print data
+        print(data)
         return True
 
     def on_error(self, status):
-        print status
+        print(status)
 
 
 if __name__ == '__main__':
@@ -31,4 +31,4 @@ if __name__ == '__main__':
 
     #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
     stream.filter(track=['nasdaq', 's&p500', 'dow jones', 'aapl', 
-        'goog', 'amzn', 'tsla', 'fb', 'nflx', 'stocks', 'stock market', 'tesla', 'dow'])
+        'goog', 'amzn', 'tsla', 'fb', 'nflx', 'stocks', 'stock market', 'tesla', 'dow', 'lyft', 'uber', 'airbnb'])
