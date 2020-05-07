@@ -80,7 +80,7 @@ if __name__ == "__main__":
     test_data = dataset[7000:]
 
     classifier = NaiveBayesClassifier.train(train_data)
-    custom_tweet = "suck my dick"
+    custom_tweet = "On the same day, Sen. Burr and his brother-in-law dumped stocks. Then the market crashed."
 
     custom_tokens = remove_noise(word_tokenize(custom_tweet))
 
