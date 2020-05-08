@@ -80,8 +80,50 @@ if __name__ == "__main__":
     test_data = dataset[7000:]
 
     classifier = NaiveBayesClassifier.train(train_data)
-    custom_tweet = "On the same day, Sen. Burr and his brother-in-law dumped stocks. Then the market crashed."
 
-    custom_tokens = remove_noise(word_tokenize(custom_tweet))
 
-    print(custom_tweet, classifier.classify(dict([token, True] for token in custom_tokens)))
+    company = "airbnb"
+
+    import requests
+    url = ('https://newsapi.org/v2/everything?q=' + company + '&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
+    response = requests.get(url)
+
+    json_file =  response.json()
+
+    #saves a copy of raw json file for reference
+    f = open("data/" + company + "_data.txt", "w")
+    f.write(str(json_file))
+
+    uber_titles = []
+    uber_contents = []
+
+    for a in json_file['articles']:
+        if company in a['title'].lower():
+            uber_titles.append(a['title'])
+
+    positive = 0
+    negative = 0
+
+    for x in range(1000):
+        for titles in uber_titles:
+            if x == 0:
+                print(titles)
+            custom_tokens = remove_noise(word_tokenize(titles))
+            result = classifier.classify(dict([token, True] for token in custom_tokens))
+            if result == "Negative":
+                negative += 1
+            else:
+                positive += 1
+    print("pos:neg", positive / negative)
+
+
+
+
+
+
+
+
+
+
+
+
