@@ -49,7 +49,6 @@ if __name__ == "__main__":
 
     positive_tweet_tokens = twitter_samples.tokenized('positive_tweets.json')
     negative_tweet_tokens = twitter_samples.tokenized('negative_tweets.json')
-
     positive_cleaned_tokens_list = []
     negative_cleaned_tokens_list = []
 
@@ -58,10 +57,6 @@ if __name__ == "__main__":
 
     for tokens in negative_tweet_tokens:
         negative_cleaned_tokens_list.append(remove_noise(tokens, stop_words))
-
-    all_pos_words = get_all_words(positive_cleaned_tokens_list)
-
-    freq_dist_pos = FreqDist(all_pos_words)
 
     positive_tokens_for_model = get_tweets_for_model(positive_cleaned_tokens_list)
     negative_tokens_for_model = get_tweets_for_model(negative_cleaned_tokens_list)
@@ -72,43 +67,88 @@ if __name__ == "__main__":
     negative_dataset = [(tweet_dict, "Negative")
                          for tweet_dict in negative_tokens_for_model]
 
-    dataset = positive_dataset + negative_dataset
+    import json
+
+    with open('data/training.json') as f:
+      data = json.load(f)
+
+
+    positive = []
+    negative = []
+
+
+    for d in data:
+        if (str(d['sentiment']).isnumeric()):
+            if d['sentiment'] == 5:
+                positive.append(d['text'])
+            elif d['sentiment'] == 1:
+                negative.append(d['text'])
+            else:
+                if d['sentiment'] * d['sentiment:confidence'] > 2:
+                    positive.append(d['text'])
+                else:
+                    negative.append(d['text'])
+    
+    positive_tokens = []
+    negative_tokens = []
+    for p in positive:
+        positive_tokens.append(word_tokenize(p))
+    for n in negative:
+        negative_tokens.append(word_tokenize(n))
+    
+    positive_clean = []
+    negative_clean = []
+    for p in positive_tokens:
+        positive_clean.append(remove_noise(p, stop_words))
+    for n in negative_tokens:
+        negative_clean.append(remove_noise(n, stop_words))
+
+    positive_model = get_tweets_for_model(positive_clean)
+    negative_model = get_tweets_for_model(negative_clean)
+
+    p_dataset = [(p, "Positive")
+                         for p in positive_model]
+
+    n_dataset = [(n, "Negative")
+                         for n in negative_model]
+
+
+    dataset = positive_dataset + negative_dataset + p_dataset + n_dataset
 
     random.shuffle(dataset)
 
-    train_data = dataset[:7000]
-    test_data = dataset[7000:]
+    train_data = dataset[:10000]
+    test_data = dataset[10000:]
 
     classifier = NaiveBayesClassifier.train(train_data)
 
 
-    company = "airbnb"
+    company = "lyft"
 
     import requests
     url = ('https://newsapi.org/v2/everything?q=' + company + '&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
     response = requests.get(url)
 
-    json_file =  response.json()
+    json_file = response.json()
 
     #saves a copy of raw json file for reference
     f = open("data/" + company + "_data.txt", "w")
     f.write(str(json_file))
 
-    uber_titles = []
-    uber_contents = []
+    titles = []
+    company_contents = []
 
     for a in json_file['articles']:
         if company in a['title'].lower():
-            uber_titles.append(a['title'])
+            titles.append(a['title'])
+            titles.append(a['description'])
 
     positive = 0
     negative = 0
 
     for x in range(1000):
-        for titles in uber_titles:
-            if x == 0:
-                print(titles)
-            custom_tokens = remove_noise(word_tokenize(titles))
+        for t in titles:
+            custom_tokens = remove_noise(word_tokenize(t))
             result = classifier.classify(dict([token, True] for token in custom_tokens))
             if result == "Negative":
                 negative += 1
