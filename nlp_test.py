@@ -154,15 +154,15 @@ if __name__ == "__main__":
     n3 = []
     p3 = []
 
-    f = open("data/positive-words.txt", "r", encoding="latin-1")
+    f = open("data/positive.txt", "r", encoding="latin-1")
     f1 = f.readlines()
     for x in f1:
-        p3.append(word_tokenize(x))
+        p3.append(remove_noise(word_tokenize(x.lower()), stop_words))
     
-    f = open("data/negative-words.txt", "r", encoding="latin-1")
+    f = open("data/negative.txt", "r", encoding="latin-1")
     f1 = f.readlines()
     for x in f1:
-        n3.append(word_tokenize(x))
+        n3.append(remove_noise(word_tokenize(x.lower()), stop_words))
 
     n3_model = get_tweets_for_model(n3)
     p3_model = get_tweets_for_model(p3)
@@ -170,16 +170,39 @@ if __name__ == "__main__":
     n3_1 = [(n, "Negative") for n in n3_model]
     p3_1 = [(p, "Positive") for p in p3_model]
 
+
+    n4 = []
+    p4 = []
+
+    f = open("data/test-positive.txt", "r", encoding="latin-1")
+    f1 = f.readlines()
+    for x in f1:
+        p4.append(remove_noise(word_tokenize(x.lower()), stop_words))
+    
+    f = open("data/test-negative.txt", "r", encoding="latin-1")
+    f1 = f.readlines()
+    for x in f1:
+        n4.append(remove_noise(word_tokenize(x.lower()), stop_words))
+
+    n4_model = get_tweets_for_model(n4)
+    p4_model = get_tweets_for_model(p4)
+
+    n4_1 = [(n, "Negative") for n in n4_model]
+    p4_1 = [(p, "Positive") for p in p4_model]
+
+    random.shuffle(n4_1)
+    random.shuffle(p4_1)
     #splitpoint = len(dataset) * 8 // 10
     #train_data = n2_dataset[:354] + p2_dataset + n3_1 + p3_1 + p_dataset + n_dataset + positive_dataset + negative_dataset
-    train_data = n3_1 + p3_1
+    train_data = n3_1 + p3_1 + n4_1 + p4_1
     random.shuffle(train_data)
     #test_data = dataset[splitpoint:]
 
     classifier = NaiveBayesClassifier.train(train_data)
 
 
-    company = "lyft"
+    company_ticker = "FB"
+    company = "luckin coffee"
 
     import requests
     url = ('https://newsapi.org/v2/everything?q=' + company + '&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
@@ -188,30 +211,28 @@ if __name__ == "__main__":
     json_file = response.json()
 
     #saves a copy of raw json file for reference
-    f = open("data/text/" + company + "_data.txt", "w")
-    f.write(str(json_file))
+    # f = open("data/text/" + company_ticker + "/data.txt", "w")
+    # f.write(str(json_file))
 
     titles = []
-    company_contents = []
-
     for a in json_file['articles']:
         if company in a['title'].lower():
             titles.append(a['title'])
-            #titles.append(a['description'])
+
+
 
     positive = 0
     negative = 0
 
-    for x in range(1000):
-        for t in titles:
-            custom_tokens = remove_noise(word_tokenize(t.lower()))
-            result = classifier.classify(dict([token, True] for token in custom_tokens))
-            if x == 0:
-                print(t, result)
-            if result == "Negative":
-                negative += 1
-            else:
-                positive += 1
+
+    for t in titles:
+        custom_tokens = remove_noise(word_tokenize(t.lower()))
+        result = classifier.classify(dict([token, True] for token in custom_tokens))
+        print(t, result)
+        if result == "Negative":
+            negative += 1
+        else:
+            positive += 1
     print("pos:neg", str(positive) + ":" + str(negative))
 
 
