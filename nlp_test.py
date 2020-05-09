@@ -80,14 +80,14 @@ if __name__ == "__main__":
     for d in data:
         if (str(d['sentiment']).isnumeric()):
             if d['sentiment'] == 5:
-                positive.append(d['text'])
+                positive.append(d['text'].lower())
             elif d['sentiment'] == 1:
-                negative.append(d['text'])
+                negative.append(d['text'].lower())
             else:
                 if d['sentiment'] * d['sentiment:confidence'] > 2:
-                    positive.append(d['text'])
+                    positive.append(d['text'].lower())
                 else:
-                    negative.append(d['text'])
+                    negative.append(d['text'].lower())
     
     positive_tokens = []
     negative_tokens = []
@@ -113,12 +113,68 @@ if __name__ == "__main__":
                          for n in negative_model]
 
 
-    dataset = positive_dataset + negative_dataset + p_dataset + n_dataset
+    dataset = p_dataset + n_dataset
+    #dataset += positive_dataset + negative_dataset
 
     random.shuffle(dataset)
 
-    train_data = dataset[:10000]
-    test_data = dataset[10000:]
+    with open('data/negative.json') as f:
+        negative_data = json.load(f)
+
+    with open('data/positive.json') as f:
+        positive_data = json.load(f)
+
+    negative2 = []
+    positive2 = []
+
+    for d in negative_data:
+        negative2.append(d['word'].lower())
+    for d in positive_data:
+        positive2.append(d['word'].lower())
+    
+    negative2_tokens = []
+    positive2_tokens = []
+    
+    for p in negative2:
+        negative2_tokens.append(word_tokenize(p))
+    for p in positive2:
+        positive2_tokens.append(word_tokenize(p))
+    
+    negative2_model = get_tweets_for_model(negative2_tokens)
+    positive2_model = get_tweets_for_model(positive2_tokens)
+
+    
+    n2_dataset = [(n, "Negative")
+                         for n in negative2_model]
+    p2_dataset = [(p, "Positive")
+                         for p in positive2_model]
+
+    random.shuffle(n2_dataset)
+
+    n3 = []
+    p3 = []
+
+    f = open("data/positive-words.txt", "r", encoding="latin-1")
+    f1 = f.readlines()
+    for x in f1:
+        p3.append(word_tokenize(x))
+    
+    f = open("data/negative-words.txt", "r", encoding="latin-1")
+    f1 = f.readlines()
+    for x in f1:
+        n3.append(word_tokenize(x))
+
+    n3_model = get_tweets_for_model(n3)
+    p3_model = get_tweets_for_model(p3)
+
+    n3_1 = [(n, "Negative") for n in n3_model]
+    p3_1 = [(p, "Positive") for p in p3_model]
+
+    #splitpoint = len(dataset) * 8 // 10
+    #train_data = n2_dataset[:354] + p2_dataset + n3_1 + p3_1 + p_dataset + n_dataset + positive_dataset + negative_dataset
+    train_data = n3_1 + p3_1
+    random.shuffle(train_data)
+    #test_data = dataset[splitpoint:]
 
     classifier = NaiveBayesClassifier.train(train_data)
 
@@ -132,7 +188,7 @@ if __name__ == "__main__":
     json_file = response.json()
 
     #saves a copy of raw json file for reference
-    f = open("data/" + company + "_data.txt", "w")
+    f = open("data/text/" + company + "_data.txt", "w")
     f.write(str(json_file))
 
     titles = []
@@ -141,20 +197,22 @@ if __name__ == "__main__":
     for a in json_file['articles']:
         if company in a['title'].lower():
             titles.append(a['title'])
-            titles.append(a['description'])
+            #titles.append(a['description'])
 
     positive = 0
     negative = 0
 
     for x in range(1000):
         for t in titles:
-            custom_tokens = remove_noise(word_tokenize(t))
+            custom_tokens = remove_noise(word_tokenize(t.lower()))
             result = classifier.classify(dict([token, True] for token in custom_tokens))
+            if x == 0:
+                print(t, result)
             if result == "Negative":
                 negative += 1
             else:
                 positive += 1
-    print("pos:neg", positive / negative)
+    print("pos:neg", str(positive) + ":" + str(negative))
 
 
 
