@@ -21,7 +21,7 @@ for ct in company_ticker:
     json_file = response.json()
 
     #saves a copy of raw json file for reference
-    f = open("data/text/" + ct + "/pos_data.txt", "w")
+    f = open("data/text/" + ct + "/pos_data1.txt", "w")
     f.write(str(json_file))
 
 
@@ -29,7 +29,7 @@ for ct in company_ticker:
         pos_titles.append(a['title'])
 
 
-outF = open("data/positive.txt", "w")
+outF = open("data/positive.txt", "a")
 for title in pos_titles:
     title = title.replace('\n', '')
     outF.write(title)
@@ -44,7 +44,7 @@ for ct in company_ticker:
     json_file = response.json()
 
     #saves a copy of raw json file for reference
-    f = open("data/text/" + ct + "/neg_data.txt", "w")
+    f = open("data/text/" + ct + "/neg_data1.txt", "w")
     f.write(str(json_file))
 
 
@@ -52,7 +52,7 @@ for ct in company_ticker:
         neg_titles.append(a['title'])
 
 
-outF = open("data/negative.txt", "w")
+outF = open("data/negative.txt", "a")
 for title in neg_titles:
     title = title.replace('\n', '')
     outF.write(title)

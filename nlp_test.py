@@ -202,10 +202,10 @@ if __name__ == "__main__":
 
 
     company_ticker = "FB"
-    company = "luckin coffee"
+    company = "uber"
 
     import requests
-    url = ('https://newsapi.org/v2/everything?q=' + company + '&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
+    url = ('https://newsapi.org/v2/everything?q=' + company + '&language=en&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
     response = requests.get(url)
 
     json_file = response.json()
