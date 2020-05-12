@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
 
     company_ticker = "FB"
-    company = "uber"
+    company = "lyft"
 
     import requests
     url = ('https://newsapi.org/v2/everything?q=' + company + '&language=en&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')

@@ -21,7 +21,7 @@ for ct in company_ticker:
     json_file = response.json()
 
     #saves a copy of raw json file for reference
-    f = open("data/text/" + ct + "/pos_data1.txt", "w")
+    f = open("data/text/" + ct + "/pos_data2.txt", "w")
     f.write(str(json_file))
 
 
@@ -44,7 +44,7 @@ for ct in company_ticker:
     json_file = response.json()
 
     #saves a copy of raw json file for reference
-    f = open("data/text/" + ct + "/neg_data1.txt", "w")
+    f = open("data/text/" + ct + "/neg_data2.txt", "w")
     f.write(str(json_file))
 
 
