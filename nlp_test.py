@@ -154,22 +154,28 @@ if __name__ == "__main__":
     n3 = []
     p3 = []
 
+    positive_dict = {}
+    negative_dict = {}
+
     f = open("data/positive.txt", "r", encoding="latin-1")
     f1 = f.readlines()
     for x in f1:
-        p3.append(remove_noise(word_tokenize(x.lower()), stop_words))
+        if not x.lower() in positive_dict:
+            positive_dict[x.lower()] = 1
+            p3.append(remove_noise(word_tokenize(x.lower()), stop_words))
     
     f = open("data/negative.txt", "r", encoding="latin-1")
     f1 = f.readlines()
     for x in f1:
-        n3.append(remove_noise(word_tokenize(x.lower()), stop_words))
+        if not x.lower() in negative_dict:
+            negative_dict[x.lower()] = 1
+            n3.append(remove_noise(word_tokenize(x.lower()), stop_words))
 
     n3_model = get_tweets_for_model(n3)
     p3_model = get_tweets_for_model(p3)
 
     n3_1 = [(n, "Negative") for n in n3_model]
     p3_1 = [(p, "Positive") for p in p3_model]
-
 
     n4 = []
     p4 = []
@@ -192,16 +198,27 @@ if __name__ == "__main__":
 
     random.shuffle(n4_1)
     random.shuffle(p4_1)
+    random.shuffle(n3_1)
+    random.shuffle(p3_1)
+
+    
+
     #splitpoint = len(dataset) * 8 // 10
     #train_data = n2_dataset[:354] + p2_dataset + n3_1 + p3_1 + p_dataset + n_dataset + positive_dataset + negative_dataset
-    train_data = n3_1 + p3_1 + n4_1 + p4_1
+    
+
+    #equalize data
+    temp_train_data = n3_1[:400] + p3_1[:400]
+    test_data = n3_1[400:] + p3_1[400:]
+    random.shuffle(test_data)
+
+    train_data = temp_train_data + n4_1 + p4_1
     random.shuffle(train_data)
-    #test_data = dataset[splitpoint:]
 
     classifier = NaiveBayesClassifier.train(train_data)
+    print("Accuracy is:", classify.accuracy(classifier, test_data))
 
-
-    company_ticker = "FB"
+    #company_ticker = "FB"
     company = "lyft"
 
     import requests
