@@ -177,6 +177,11 @@ if __name__ == "__main__":
     n3_1 = [(n, "Negative") for n in n3_model]
     p3_1 = [(p, "Positive") for p in p3_model]
 
+
+    print(len(n3), len(p3))
+
+
+
     n4 = []
     p4 = []
 
@@ -219,7 +224,7 @@ if __name__ == "__main__":
     print("Accuracy is:", classify.accuracy(classifier, test_data))
 
     #company_ticker = "FB"
-    company = "lyft"
+    company = "airbnb"
 
     import requests
     url = ('https://newsapi.org/v2/everything?q=' + company + '&language=en&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
