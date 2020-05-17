@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Stocks Predictor</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+	<div class="dropdown"	>
+		<button class="dropbtn">Company</button>
+		<div class="dropdown-content">
+			<a href="/aapl">Apple</a>
+			<a href="/uber">Uber</a>
+			<a href="/lyft">Lyft</a>
+		</div>
+	</div>
+
+
+	<h2>{{ accuracy|safe }}</h2>
+
+	<p>{{ output|safe }}</p>
+</body>
+</html>

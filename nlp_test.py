@@ -38,7 +38,7 @@ def get_tweets_for_model(cleaned_tokens_list):
     for tweet_tokens in cleaned_tokens_list:
         yield dict([token, True] for token in tweet_tokens)
 
-if __name__ == "__main__":
+def train_model():
 
     positive_tweets = twitter_samples.strings('positive_tweets.json')
     negative_tweets = twitter_samples.strings('negative_tweets.json')
@@ -220,11 +220,24 @@ if __name__ == "__main__":
     train_data = temp_train_data + n4_1 + p4_1
     random.shuffle(train_data)
 
+
+
+
+
+
+
     classifier = NaiveBayesClassifier.train(train_data)
-    print("Accuracy is:", classify.accuracy(classifier, test_data))
+    return (classifier, "Accuracy is: " + str(classify.accuracy(classifier, test_data)))
+
+
+
+
+def main(name_of_company, classifier):
+
+    to_return = ""
 
     #company_ticker = "FB"
-    company = "airbnb"
+    company = name_of_company
 
     import requests
     url = ('https://newsapi.org/v2/everything?q=' + company + '&language=en&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
@@ -250,15 +263,14 @@ if __name__ == "__main__":
     for t in titles:
         custom_tokens = remove_noise(word_tokenize(t.lower()))
         result = classifier.classify(dict([token, True] for token in custom_tokens))
-        print(t, result)
+        to_return += t + " " + result + "\n"
         if result == "Negative":
             negative += 1
         else:
             positive += 1
-    print("pos:neg", str(positive) + ":" + str(negative))
+    to_return += "\n" + "pos:neg " + str(positive) + ":" + str(negative)
 
-
-
+    return to_return
 
 
 
