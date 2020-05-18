@@ -8,6 +8,6 @@
 
 	<p>{{ output|safe }}</p>
 
-	<img src="{{url_for('static', filename='graph.png')}}" alt="Graph" style="width: 50%; height: 50%">
+	<img src="data:image/png;base64, {{ plot_url }}">
 </body>
 </html>

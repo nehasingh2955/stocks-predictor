@@ -26,24 +26,24 @@ def appl():
     global classifier
     output = nlp_test.main("apple", classifier)
     output = output.replace("\n", "<br>")
-    graph.graph("AAPL")
-    return render_template('page.html', name="Apple Prediction", output=output, accuracy=accuracy)
+    plot_url = graph.graph("AAPL")
+    return render_template('page.html', name="Apple Prediction", output=output, accuracy=accuracy, plot_url=plot_url)
 
 @app.route("/uber", methods=["GET"])
 def uber():
     global classifier
     output = nlp_test.main("uber", classifier)
     output = output.replace("\n", "<br>")
-    graph.graph("UBER")
-    return render_template('page.html', name="Uber Prediction", output=output, accuracy=accuracy)
+    plot_url = graph.graph("UBER")
+    return render_template('page.html', name="Uber Prediction", output=output, accuracy=accuracy, plot_url=plot_url)
 
 @app.route("/lyft")
 def lyft():
     global classifier
     output = nlp_test.main("lyft", classifier)
     output = output.replace("\n", "<br>")
-    graph.graph("LYFT")
-    return render_template('page.html', name="Lyft", output=output, accuracy=accuracy)
+    plot_url = graph.graph("LYFT")
+    return render_template('page.html', name="Lyft Prediction", output=output, accuracy=accuracy, plot_url=plot_url)
 
 
 if __name__ == '__main__':
