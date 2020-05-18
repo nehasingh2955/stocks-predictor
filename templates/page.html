@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{name}}</title>
+</head>
+<body>
+	<h2>{{ accuracy|safe }}</h2>
+
+	<p>{{ output|safe }}</p>
+
+	<img src="{{url_for('static', filename='graph.png')}}" alt="Graph" style="width: 50%; height: 50%">
+</body>
+</html>

@@ -5,6 +5,9 @@ from datetime import datetime
 import requests
 from matplotlib import rcParams
 
+from io import BytesIO
+import base64
+
 RAPIDAPI_KEY = "7b04715a5dmshb9466c2cb98eecep188d44jsn7d8c99c33de6"
 RAPIDAPI_HOST = "apidojo-yahoo-finance-v1.p.rapidapi.com"
 
@@ -51,9 +54,9 @@ def attachEvents(inputdata):
     return eventlist
 
 
-if __name__ == "__main__":
+def graph(symbol):
 
-    symbol_string = "UBER"
+    symbol_string = symbol
     retdata = fetchStockData(symbol_string)
 
     if (None != inputdata):
@@ -77,7 +80,12 @@ if __name__ == "__main__":
         fontweight='light',
         fontsize='xx-small'
         )
-    plt.show()
 
+    plt.savefig('static/graph.png', format='png')
+    plt.close()
+
+    # plot_url = base64.b64encode(img.read())
+
+    # return plot_url
 
 
