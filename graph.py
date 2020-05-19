@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 import requests
 from matplotlib import rcParams
+rcParams.update({'figure.autolayout': True})
 
 from io import BytesIO
 import base64
@@ -15,7 +16,7 @@ symbol_string = ""
 inputdata = {}
 
 def fetchStockData(symbol):
-    response = requests.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-charts?region=US&lang=en&symbol=" + symbol + "&interval=1d&range=3mo",
+    response = requests.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-charts?region=US&lang=en&symbol=" + symbol + "&interval=1d&range=1mo",
     headers={
         "X-RapidAPI-Host": RAPIDAPI_HOST,
         "X-RapidAPI-Key": RAPIDAPI_KEY,
@@ -61,18 +62,38 @@ def graph(symbol):
 
     if (None != inputdata):
         inputdata["Timestamp"] = parseTimestamp(retdata)
+
+        fake = []
+        for x in range(len(inputdata["Timestamp"])//2):
+            fake.append(x)
+        for x in range(len(inputdata["Timestamp"])//2):
+            fake.append(x)
+
+        temp = inputdata["Timestamp"]
+        for t in temp:
+            print(t)
+        inputdata["Timestamp"] = fake
+
         inputdata["Values"] = parseValues(retdata)
         inputdata["Events"] = attachEvents(retdata)
 
         df = pd.DataFrame(inputdata)
 
+        
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    #     print(df)
 
     sns.set(style="darkgrid")
     rcParams['figure.figsize'] = 13,5
     rcParams['figure.subplot.bottom'] = 0.2
-    ax = sns.lineplot(x="Timestamp", y="Values", hue="Events", dashes=False, markers=True, data=df, sort=False)
+    #ax = sns.lineplot(x="Timestamp", y="Values", hue="Events", dashes=False, markers=True, data=df, sort=False)
+    ax = sns.lmplot(x="Timestamp", y="Values", hue="Events", data=df)
 
-    ax.set_title('Symbol: ' + symbol_string)
+    #ax.set_title('Symbol: ' + symbol_string)
+    ax.fig.suptitle('Symbol: ' + symbol_string)
+    
+    plt.xticks(inputdata["Timestamp"], temp)
+
 
     plt.xticks(
         rotation=45,
@@ -82,7 +103,7 @@ def graph(symbol):
         )
 
     img = BytesIO()
-    plt.savefig(img, format='png')
+    plt.savefig(img, format='png', dpi=200)
     plt.close()
     img.seek(0)
 
