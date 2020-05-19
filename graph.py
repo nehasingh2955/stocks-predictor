@@ -28,7 +28,7 @@ def fetchStockData(symbol):
 def parseTimestamp(inputdata):
     timestamplist = []
     timestamplist.extend(inputdata["chart"]["result"][0]["timestamp"])
-    timestamplist.extend(inputdata["chart"]["result"][0]["timestamp"])
+    #timestamplist.extend(inputdata["chart"]["result"][0]["timestamp"])
     calendertime = []
     for ts in timestamplist:
         dt = datetime.fromtimestamp(ts)
@@ -37,7 +37,7 @@ def parseTimestamp(inputdata):
 
 def parseValues(inputdata):
     valueList = []
-    valueList.extend(inputdata["chart"]["result"][0]["indicators"]["quote"][0]["open"])
+    #valueList.extend(inputdata["chart"]["result"][0]["indicators"]["quote"][0]["open"])
     valueList.extend(inputdata["chart"]["result"][0]["indicators"]["quote"][0]["close"])
 
     return valueList
@@ -46,8 +46,8 @@ def attachEvents(inputdata):
 
     eventlist = []
 
-    for i in range(0,len(inputdata["chart"]["result"][0]["timestamp"])):
-        eventlist.append("open")  
+    # for i in range(0,len(inputdata["chart"]["result"][0]["timestamp"])):
+    #     eventlist.append("open")  
 
     for i in range(0,len(inputdata["chart"]["result"][0]["timestamp"])):
         eventlist.append("close")
@@ -64,10 +64,10 @@ def graph(symbol):
         inputdata["Timestamp"] = parseTimestamp(retdata)
 
         fake = []
-        for x in range(len(inputdata["Timestamp"])//2):
+        for x in range(len(inputdata["Timestamp"])):
             fake.append(x)
-        for x in range(len(inputdata["Timestamp"])//2):
-            fake.append(x)
+        # for x in range(len(inputdata["Timestamp"])//2):
+        #     fake.append(x)
 
         temp = inputdata["Timestamp"]
         for t in temp:
@@ -84,20 +84,30 @@ def graph(symbol):
     #     print(df)
 
     sns.set(style="darkgrid")
-    rcParams['figure.figsize'] = 13,5
+    rcParams['figure.figsize'] = 15,30
     rcParams['figure.subplot.bottom'] = 0.2
     #ax = sns.lineplot(x="Timestamp", y="Values", hue="Events", dashes=False, markers=True, data=df, sort=False)
-    ax = sns.lmplot(x="Timestamp", y="Values", hue="Events", data=df)
+    ax = sns.lmplot(x="Timestamp", y="Values", fit_reg=True, order=3, data=df)
 
     #ax.set_title('Symbol: ' + symbol_string)
     ax.fig.suptitle('Symbol: ' + symbol_string)
-    
     plt.xticks(inputdata["Timestamp"], temp)
+    
+    # # resize figure box to -> put the legend out of the figure
+    # box = ax.ax.get_position() # get position of figure
+    # ax.ax.set_position([box.x0, box.y0, box.width * 0.85, box.height]) # resize position
+
+    # # Put a legend to the right side
+    # ax.ax.legend(loc='center right', bbox_to_anchor=(1.25, 0.5), ncol=1)
 
 
     plt.xticks(
         rotation=45,
         horizontalalignment='right',
+        fontweight='light',
+        fontsize='xx-small'
+        )
+    plt.yticks(
         fontweight='light',
         fontsize='xx-small'
         )
