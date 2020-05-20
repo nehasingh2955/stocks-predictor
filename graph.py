@@ -1,6 +1,7 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 from datetime import datetime
 import requests
 from matplotlib import rcParams
@@ -16,7 +17,7 @@ symbol_string = ""
 inputdata = {}
 
 def fetchStockData(symbol):
-    response = requests.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-charts?region=US&lang=en&symbol=" + symbol + "&interval=1d&range=1mo",
+    response = requests.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-charts?region=US&lang=en&symbol=" + symbol + "&interval=1d&range=3mo",
     headers={
         "X-RapidAPI-Host": RAPIDAPI_HOST,
         "X-RapidAPI-Key": RAPIDAPI_KEY,
@@ -64,14 +65,15 @@ def graph(symbol):
         inputdata["Timestamp"] = parseTimestamp(retdata)
 
         fake = []
+        comparison = datetime.strptime(inputdata["Timestamp"][0], "%m/%d/%Y")
         for x in range(len(inputdata["Timestamp"])):
-            fake.append(x)
+            cur = datetime.strptime(inputdata["Timestamp"][x], "%m/%d/%Y")
+            delta = cur - comparison
+            fake.append(delta.days)
         # for x in range(len(inputdata["Timestamp"])//2):
         #     fake.append(x)
 
         temp = inputdata["Timestamp"]
-        for t in temp:
-            print(t)
         inputdata["Timestamp"] = fake
 
         inputdata["Values"] = parseValues(retdata)
@@ -84,11 +86,14 @@ def graph(symbol):
     #     print(df)
 
     sns.set(style="darkgrid")
-    rcParams['figure.figsize'] = 15,30
+    #rcParams['figure.figsize'] = 15,30
     rcParams['figure.subplot.bottom'] = 0.2
     #ax = sns.lineplot(x="Timestamp", y="Values", hue="Events", dashes=False, markers=True, data=df, sort=False)
     ax = sns.lmplot(x="Timestamp", y="Values", fit_reg=True, order=3, data=df)
 
+    coef = np.polyfit(df["Timestamp"], df["Values"], 3).tolist()
+
+    ax.fig.set_size_inches(18.5, 10.5)
     #ax.set_title('Symbol: ' + symbol_string)
     ax.fig.suptitle('Symbol: ' + symbol_string)
     plt.xticks(inputdata["Timestamp"], temp)
@@ -119,6 +124,9 @@ def graph(symbol):
 
     plot_url = base64.b64encode(img.getvalue()).decode()
 
-    return plot_url
+
+
+
+    return (plot_url, coef, inputdata["Timestamp"][len(inputdata["Timestamp"])-1])
 
 
