@@ -19,12 +19,6 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="inner">
-
-							<!-- Logo -->
-								<a href="/" class="logo">
-									<span class="symbol"><img src="../static/images/logo.svg" alt="" /></span><span class="title">Phantom</span>
-								</a>
-
 							<!-- Nav -->
 								<nav>
 									<ul>
@@ -43,6 +37,14 @@
 							<li><a href="/aapl">Apple</a></li>
 							<li><a href="/uber">Uber</a></li>
 							<li><a href="/lyft">Lyft</a></li>
+							<li><a href="/facebook">Home</a></li>
+							<li><a href="/tesla">Apple</a></li>
+							<li><a href="/amazon">Uber</a></li>
+							<li><a href="/microsoft">Lyft</a></li>
+							<li><a href="/nvidia">Home</a></li>
+							<li><a href="/netflix">Apple</a></li>
+							<li><a href="/twitter">Home</a></li>
+							<li><a href="/snap">Apple</a></li>
 						</ul>
 					</nav>
 
@@ -51,7 +53,7 @@
 						<div class="inner">
 							<header>
 								<h1>Stocks Predictor</h1>
-								<p>Etiam quis viverra lorem, in semper lorem. Sed nisl arcu euismod sit amet nisi euismod sed cursus arcu elementum ipsum arcu vivamus quis venenatis orci lorem ipsum et magna feugiat veroeros aliquam. Lorem ipsum dolor sit amet nullam dolore.</p>
+								<p>A tool to predict future stock prices for various tech companies i.e. Google, Tesla, Amazon, Uber etc. Price is predicted by performing sentiment analysis using a Naive Bayes Classifier and the natural language toolkit along with a non-linear regression model on a stock's one month chart. Using <a href="https://newsapi.org/" class="description">News API</a> to get relevant news and <a href="https://stocknewsapi.com/" class="description">Stock News API</a> to get training data.</p>
 							</header>
 							<section class="tiles">
 								<article class="style1">
@@ -91,10 +93,10 @@
 									<span class="image">
 										<img src="../static/images/pic04.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Tempus</h2>
+									<a href="/facebook">
+										<h2>Facebook</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Facebook Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -102,10 +104,10 @@
 									<span class="image">
 										<img src="../static/images/pic05.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Aliquam</h2>
+									<a href="/tesla">
+										<h2>Tesla</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Tesla Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -113,10 +115,10 @@
 									<span class="image">
 										<img src="../static/images/pic06.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Veroeros</h2>
+									<a href="/google">
+										<h2>Google</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Google Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -124,10 +126,10 @@
 									<span class="image">
 										<img src="../static/images/pic07.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Ipsum</h2>
+									<a href="/amazon">
+										<h2>Amazon</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Amazon Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -135,10 +137,10 @@
 									<span class="image">
 										<img src="../static/images/pic08.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Dolor</h2>
+									<a href="/microsoft">
+										<h2>Microsoft</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Microsoft Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -146,10 +148,10 @@
 									<span class="image">
 										<img src="../static/images/pic09.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Nullam</h2>
+									<a href="/nvidia">
+										<h2>Nvidia</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Nvidia Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -157,10 +159,10 @@
 									<span class="image">
 										<img src="../static/images/pic10.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Ultricies</h2>
+									<a href="/netflix">
+										<h2>Netflix</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Netflix Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -168,10 +170,10 @@
 									<span class="image">
 										<img src="../static/images/pic11.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Dictum</h2>
+									<a href="/twitter">
+										<h2>Twitter</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Twitter Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -179,10 +181,10 @@
 									<span class="image">
 										<img src="../static/images/pic12.jpg" alt="" />
 									</span>
-									<a href="generic.html">
-										<h2>Pretium</h2>
+									<a href="/snap">
+										<h2>Snap Inc.</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p>Generate Snap Inc. Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
 								</article>
@@ -192,11 +194,11 @@
 
 
 		<!-- Scripts -->
-			<script src="static/js/jquery.min.js"></script>
-			<script src="static/js/browser.min.js"></script>
-			<script src="static/js/breakpoints.min.js"></script>
-			<script src="static/js/util.js"></script>
-			<script src="static/js/main.js"></script>
+			<script src="../static/js/jquery.min.js"></script>
+			<script src="../static/js/browser.min.js"></script>
+			<script src="../static/js/breakpoints.min.js"></script>
+			<script src="../static/js/util.js"></script>
+			<script src="../static/js/main.js"></script>
 
 	</body>
 </html>

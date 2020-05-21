@@ -1,4 +1,4 @@
-company_ticker = ["FB", "TSLA", "GOOGL", "AAPL", "UBER", "LYFT", "AMZN", "MSFT", "NVDA", "NFLX"]
+company_ticker = ["FB", "TSLA", "GOOGL", "AAPL", "UBER", "LYFT", "AMZN", "MSFT", "NVDA", "NFLX", "TWTR", "SNAP"]
 
 pos_titles = []
 neg_titles = []

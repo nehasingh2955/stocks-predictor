@@ -29,6 +29,17 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;}
 
+a.description:hover {
+	border-bottom-color: #2f61cc;
+ 	color: #2f61cc;
+}
+
+a.description:focus {
+ 	border-bottom-color: #2f61cc;
+ 	color: #2f61cc;
+}
+
+
 body {
 	line-height: 1;
 }

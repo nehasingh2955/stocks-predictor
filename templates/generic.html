@@ -19,12 +19,6 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="inner">
-
-							<!-- Logo -->
-								<a href="/" class="logo">
-									<span class="symbol"><img src="../static/images/logo.svg" alt="" /></span><span class="title">Phantom</span>
-								</a>
-
 							<!-- Nav -->
 								<nav>
 									<ul>
@@ -43,17 +37,25 @@
 							<li><a href="/aapl">Apple</a></li>
 							<li><a href="/uber">Uber</a></li>
 							<li><a href="/lyft">Lyft</a></li>
+							<li><a href="/facebook">Home</a></li>
+							<li><a href="/tesla">Apple</a></li>
+							<li><a href="/amazon">Uber</a></li>
+							<li><a href="/microsoft">Lyft</a></li>
+							<li><a href="/nvidia">Home</a></li>
+							<li><a href="/netflix">Apple</a></li>
+							<li><a href="/twitter">Home</a></li>
+							<li><a href="/snap">Apple</a></li>
 						</ul>
 					</nav>
 
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>Generic Page</h1>
+							<h1>Predicted price: ${{ predicted_value }}</h1>
 							<span class="image main"><img src="data:image/png;base64, {{ plot_url }}"></span>
 							<p>{{ accuracy|safe }}</p>
 							<p>{{ output|safe }}</p>
-							<p>{{ predicted_value }}</p>
+							<p></p>
 						</div>
 					</div>
 
