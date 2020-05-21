@@ -17,7 +17,7 @@ symbol_string = ""
 inputdata = {}
 
 def fetchStockData(symbol):
-    response = requests.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-charts?region=US&lang=en&symbol=" + symbol + "&interval=1d&range=3mo",
+    response = requests.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-charts?region=US&lang=en&symbol=" + symbol + "&interval=1d&range=1mo",
     headers={
         "X-RapidAPI-Host": RAPIDAPI_HOST,
         "X-RapidAPI-Key": RAPIDAPI_KEY,
@@ -97,7 +97,7 @@ def graph(symbol):
     #ax.set_title('Symbol: ' + symbol_string)
     ax.fig.suptitle('Symbol: ' + symbol_string)
     plt.xticks(inputdata["Timestamp"], temp)
-    
+
     # # resize figure box to -> put the legend out of the figure
     # box = ax.ax.get_position() # get position of figure
     # ax.ax.set_position([box.x0, box.y0, box.width * 0.85, box.height]) # resize position

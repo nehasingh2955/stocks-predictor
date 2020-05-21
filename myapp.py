@@ -5,7 +5,8 @@ import os
 
 app = Flask(__name__)
 
-
+def predict_value(calculated_val, positive, negative):
+    return calculated_val + (positive/calculated_val) - (negative/calculated_val)
 
 def calculate(coef, x):
     l = len(coef) - 1
@@ -33,39 +34,51 @@ def home():
 @app.route("/aapl")
 def appl():
     global classifier
-    output = nlp_test.main("apple", classifier)
+    nlp_results = nlp_test.main("apple", classifier)
+    output = nlp_results[0]
+    positive = nlp_results[1]
+    negative = nlp_results[2]
     output = output.replace("\n", "<br>")
     tup = graph.graph("AAPL")
     plot_url = tup[0]
     coef = tup[1]
     x = tup[2] + 1
-    predicted_value = calculate(coef, x)
+    calculated_val = calculate(coef, x)
+    predicted_value = predict_value(calculated_val, positive, negative)
     return render_template('page.html', name="Apple Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
 
 @app.route("/uber", methods=["GET"])
 def uber():
     global classifier
-    output = nlp_test.main("uber", classifier)
+    nlp_results = nlp_test.main("uber", classifier)
+    output = nlp_results[0]
+    positive = nlp_results[1]
+    negative = nlp_results[2]
     output = output.replace("\n", "<br>")
     tup = graph.graph("UBER")
     plot_url = tup[0]
     coef = tup[1]
     x = tup[2] + 1
-    predicted_value = calculate(coef, x)
+    calculated_val = calculate(coef, x)
+    predicted_value = predict_value(calculated_val, positive, negative)
     return render_template('page.html', name="Uber Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
 
 @app.route("/lyft")
 def lyft():
     global classifier
-    output = nlp_test.main("lyft", classifier)
+    nlp_results = nlp_test.main("lyft", classifier)
+    output = nlp_results[0]
+    positive = nlp_results[1]
+    negative = nlp_results[2]
     output = output.replace("\n", "<br>")
     tup = graph.graph("LYFT")
     plot_url = tup[0]
     coef = tup[1]
     x = tup[2] + 1
-    predicted_value = calculate(coef, x)
+    calculated_val = calculate(coef, x)
+    predicted_value = predict_value(calculated_val, positive, negative)
     return render_template('page.html', name="Lyft Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
 
