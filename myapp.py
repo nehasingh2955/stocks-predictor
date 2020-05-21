@@ -2,6 +2,7 @@ from flask import Flask, render_template
 import nlp_test
 import graph
 import os
+import datetime
 
 app = Flask(__name__)
 
@@ -29,7 +30,9 @@ def home():
         classifier = tup[0]
         accuracy = tup[1]
         runOnce = False
-    return render_template('index.html')
+    tmrw = datetime.date.today() + datetime.timedelta(days=1)
+    d = tmrw.strftime("%B %d, %Y")
+    return render_template('index.html', date=d)
 
 @app.route("/aapl")
 def appl():
@@ -45,7 +48,7 @@ def appl():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
-    return render_template('page.html', name="Apple Prediction", output=output, 
+    return render_template('generic.html', name="Apple Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
 
 @app.route("/uber", methods=["GET"])
@@ -62,7 +65,7 @@ def uber():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
-    return render_template('page.html', name="Uber Prediction", output=output, 
+    return render_template('generic.html', name="Uber Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
 
 @app.route("/lyft")
@@ -79,7 +82,7 @@ def lyft():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
-    return render_template('page.html', name="Lyft Prediction", output=output, 
+    return render_template('generic.html', name="Lyft Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
 
 
