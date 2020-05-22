@@ -127,6 +127,6 @@ def graph(symbol):
 
 
 
-    return (plot_url, coef, inputdata["Timestamp"][len(inputdata["Timestamp"])-1])
+    return (plot_url, coef, inputdata["Timestamp"][len(inputdata["Timestamp"])-1], inputdata["Values"][len(inputdata["Values"])-1])
 
 

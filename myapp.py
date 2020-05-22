@@ -7,7 +7,7 @@ import datetime
 app = Flask(__name__)
 
 def predict_value(calculated_val, positive, negative):
-    return "{:.2f}".format(calculated_val + (positive/calculated_val) - (negative/calculated_val))
+    return calculated_val + (positive/calculated_val) - (negative/calculated_val)
 
 def calculate(coef, x):
     l = len(coef) - 1
@@ -30,7 +30,15 @@ def home():
         classifier = tup[0]
         accuracy = tup[1]
         runOnce = False
-    tmrw = datetime.date.today() + datetime.timedelta(days=1)
+    today = datetime.date.today()
+
+    day_of_week = today.weekday()
+    if day_of_week >= 4:
+        delta = 7 - day_of_week
+    else:
+        delta = 1
+
+    tmrw = today + datetime.timedelta(days=delta)
     d = tmrw.strftime("%B %d, %Y")
     return render_template('index.html', date=d)
 
@@ -48,8 +56,18 @@ def appl():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Apple Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/uber", methods=["GET"])
 def uber():
@@ -65,8 +83,17 @@ def uber():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Uber Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/lyft")
 def lyft():
@@ -82,8 +109,17 @@ def lyft():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Lyft Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/facebook")
 def facebook():
@@ -99,8 +135,17 @@ def facebook():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Facebook Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/tesla")
 def tesla():
@@ -116,8 +161,17 @@ def tesla():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Tesla Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/google")
 def google():
@@ -133,8 +187,17 @@ def google():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Google Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/amazon")
 def amazon():
@@ -150,8 +213,17 @@ def amazon():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Amazon Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/microsoft")
 def microsoft():
@@ -167,8 +239,17 @@ def microsoft():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Microsoft Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/nvidia")
 def nvidia():
@@ -184,8 +265,17 @@ def nvidia():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Nvidia Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/netflix")
 def netflix():
@@ -201,8 +291,17 @@ def netflix():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Netflix Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/twitter")
 def twitter():
@@ -218,8 +317,17 @@ def twitter():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Twitter Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 @app.route("/snap")
 def snap():
@@ -235,8 +343,17 @@ def snap():
     x = tup[2] + 1
     calculated_val = calculate(coef, x)
     predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
     return render_template('generic.html', name="Snap Inc. Prediction", output=output, 
-        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value)
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 
 if __name__ == '__main__':
