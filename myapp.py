@@ -224,7 +224,7 @@ def twitter():
 @app.route("/snap")
 def snap():
     global classifier
-    nlp_results = nlp_test.main("snap", classifier)
+    nlp_results = nlp_test.main("snap inc", classifier)
     output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]

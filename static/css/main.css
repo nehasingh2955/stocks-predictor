@@ -2718,15 +2718,39 @@ input, select, textarea {
 			}
 
 			.tiles article.style4 > .image:before {
-				background-color: #c75b9b;
+				background-color: #3b5998;
 			}
 
 			.tiles article.style5 > .image:before {
-				background-color: #ae85ca;
+				background-color: #E82127;
 			}
 
 			.tiles article.style6 > .image:before {
-				background-color: #8499e7;
+				background-color: #0F9D58;
+			}
+
+			.tiles article.style7 > .image:before {
+				background-color: #FF9900;
+			}
+
+			.tiles article.style8 > .image:before {
+				background-color: #737373;
+			}
+
+			.tiles article.style9 > .image:before {
+				background-color: #76b900;
+			}
+
+			.tiles article.style10 > .image:before {
+				background-color: #E50914;
+			}
+
+			.tiles article.style11 > .image:before {
+				background-color: #1DA1F2;
+			}
+
+			.tiles article.style12 > .image:before {
+				background-color: #FFFC00;
 			}
 
 			body:not(.is-touch) .tiles article:hover > .image {
