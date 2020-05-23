@@ -2753,6 +2753,14 @@ input, select, textarea {
 				background-color: #FFFC00;
 			}
 
+			.tiles article.style13 > .image:before {
+				background-color: #009EDB;
+			}
+
+			.tiles article.style14 > .image:before {
+				background-color: #000000;
+			}
+
 			body:not(.is-touch) .tiles article:hover > .image {
 				-moz-transform: scale(1.1);
 				-webkit-transform: scale(1.1);

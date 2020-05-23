@@ -355,6 +355,58 @@ def snap():
     return render_template('generic.html', name="Snap Inc. Prediction", output=output, 
         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
+@app.route("/salesforce")
+def salesforce():
+    global classifier
+    nlp_results = nlp_test.main("salesforce", classifier)
+    output = nlp_results[0]
+    positive = nlp_results[1]
+    negative = nlp_results[2]
+    output = output.replace("\n", "<br>")
+    tup = graph.graph("CRM")
+    plot_url = tup[0]
+    coef = tup[1]
+    x = tup[2] + 1
+    calculated_val = calculate(coef, x)
+    predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
+    return render_template('generic.html', name="Salesforce Prediction", output=output, 
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
+
+@app.route("/splunk")
+def splunk():
+    global classifier
+    nlp_results = nlp_test.main("Splunk", classifier)
+    output = nlp_results[0]
+    positive = nlp_results[1]
+    negative = nlp_results[2]
+    output = output.replace("\n", "<br>")
+    tup = graph.graph("SPLK")
+    plot_url = tup[0]
+    coef = tup[1]
+    x = tup[2] + 1
+    calculated_val = calculate(coef, x)
+    predicted_value = predict_value(calculated_val, positive, negative)
+
+    prev_value = tup[3]
+    if predicted_value > prev_value:
+        img_src = "../static/images/trending-up.svg"
+    elif predicted_value < prev_value:
+        img_src = "../static/images/trending-down.svg"
+
+    predicted_value = "{:.2f}".format(predicted_value)
+
+    return render_template('generic.html', name="Splunk Prediction", output=output, 
+        accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
