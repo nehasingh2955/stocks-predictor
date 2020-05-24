@@ -213,8 +213,8 @@ def train_model():
     
 
     #equalize data
-    temp_train_data = n3_1[:510] + p3_1[:510]
-    test_data = n3_1[510:] + p3_1[510:]
+    temp_train_data = n3_1[:700] + p3_1[:700]
+    test_data = n3_1[700:] + p3_1[700:]
     random.shuffle(test_data)
 
     train_data = temp_train_data + n4_1 + p4_1
@@ -234,7 +234,7 @@ def train_model():
 
 def main(name_of_company, classifier):
 
-    to_return = ""
+    to_return = []
 
     #company_ticker = "FB"
     company = name_of_company
@@ -250,9 +250,11 @@ def main(name_of_company, classifier):
     # f.write(str(json_file))
 
     titles = []
+    links = []
     for a in json_file['articles']:
         if company in a['title'].lower():
             titles.append(a['title'])
+            links.append(a['url'])
 
 
 
@@ -260,15 +262,17 @@ def main(name_of_company, classifier):
     negative = 0
 
 
-    for t in titles:
-        custom_tokens = remove_noise(word_tokenize(t.lower()))
+    for i in range(len(titles)):
+        custom_tokens = remove_noise(word_tokenize(titles[i].lower()))
         result = classifier.classify(dict([token, True] for token in custom_tokens))
-        to_return += t + " " + result + "\n"
+        #to_return += t + " " + result + "\n"
         if result == "Negative":
             negative += 1
+            to_return.append((titles[i], links[i], "Negative"))
         else:
             positive += 1
-    to_return += "\n" + "pos:neg " + str(positive) + ":" + str(negative)
+            to_return.append((titles[i], links[i], "Positive"))
+    #to_return += "\n" + "pos:neg " + str(positive) + ":" + str(negative)
 
     return (to_return, positive, negative)
 

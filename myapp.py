@@ -16,6 +16,26 @@ def calculate(coef, x):
         s += (x**i) * coef[l-i]
     return s
 
+
+def convert_output(output, positive, negative):
+    to_return = "Positive: <span style=\"color:#00ff00;\">" + str(positive) + "</span>" + " Negative: <span style=\"color:#FF0000;\">" + str(negative) + "</span><br>"
+    
+    for tup in output:
+        title = tup[0]
+        url = tup[1]
+        sentiment = tup[2]
+
+        if sentiment == "Positive":
+            color = "#00ff00";
+        else:
+            color = "#FF0000"
+
+        to_return += "<a href=\"" + url + "\">" + title + "</a> " + "<span style=\"float:right; color:" + color + ";\">" + sentiment + "</span>" + "<br>"
+    
+    return to_return
+
+
+
 classifier = None
 runOnce = True
 accuracy = ""
@@ -46,10 +66,9 @@ def home():
 def appl():
     global classifier
     nlp_results = nlp_test.main("apple", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("AAPL")
     plot_url = tup[0]
     coef = tup[1]
@@ -73,10 +92,9 @@ def appl():
 def uber():
     global classifier
     nlp_results = nlp_test.main("uber", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("UBER")
     plot_url = tup[0]
     coef = tup[1]
@@ -99,10 +117,9 @@ def uber():
 def lyft():
     global classifier
     nlp_results = nlp_test.main("lyft", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("LYFT")
     plot_url = tup[0]
     coef = tup[1]
@@ -125,10 +142,9 @@ def lyft():
 def facebook():
     global classifier
     nlp_results = nlp_test.main("facebook", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("FB")
     plot_url = tup[0]
     coef = tup[1]
@@ -151,10 +167,9 @@ def facebook():
 def tesla():
     global classifier
     nlp_results = nlp_test.main("tesla", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("TSLA")
     plot_url = tup[0]
     coef = tup[1]
@@ -177,10 +192,9 @@ def tesla():
 def google():
     global classifier
     nlp_results = nlp_test.main("google", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("GOOGL")
     plot_url = tup[0]
     coef = tup[1]
@@ -203,10 +217,9 @@ def google():
 def amazon():
     global classifier
     nlp_results = nlp_test.main("amazon", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("AMZN")
     plot_url = tup[0]
     coef = tup[1]
@@ -229,10 +242,9 @@ def amazon():
 def microsoft():
     global classifier
     nlp_results = nlp_test.main("microsoft", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("MSFT")
     plot_url = tup[0]
     coef = tup[1]
@@ -255,10 +267,9 @@ def microsoft():
 def nvidia():
     global classifier
     nlp_results = nlp_test.main("nvidia", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("NVDA")
     plot_url = tup[0]
     coef = tup[1]
@@ -281,10 +292,9 @@ def nvidia():
 def netflix():
     global classifier
     nlp_results = nlp_test.main("netflix", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("NFLX")
     plot_url = tup[0]
     coef = tup[1]
@@ -307,10 +317,9 @@ def netflix():
 def twitter():
     global classifier
     nlp_results = nlp_test.main("twitter", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("TWTR")
     plot_url = tup[0]
     coef = tup[1]
@@ -333,10 +342,9 @@ def twitter():
 def snap():
     global classifier
     nlp_results = nlp_test.main("snap inc", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("SNAP")
     plot_url = tup[0]
     coef = tup[1]
@@ -359,10 +367,9 @@ def snap():
 def salesforce():
     global classifier
     nlp_results = nlp_test.main("salesforce", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("CRM")
     plot_url = tup[0]
     coef = tup[1]
@@ -385,10 +392,9 @@ def salesforce():
 def splunk():
     global classifier
     nlp_results = nlp_test.main("Splunk", classifier)
-    output = nlp_results[0]
     positive = nlp_results[1]
     negative = nlp_results[2]
-    output = output.replace("\n", "<br>")
+    output = convert_output(nlp_results[0], positive, negative)
     tup = graph.graph("SPLK")
     plot_url = tup[0]
     coef = tup[1]
