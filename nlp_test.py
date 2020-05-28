@@ -213,8 +213,8 @@ def train_model():
     
 
     #equalize data
-    temp_train_data = n3_1[:700] + p3_1[:700]
-    test_data = n3_1[700:] + p3_1[700:]
+    temp_train_data = n3_1[:720] + p3_1[:720]
+    test_data = n3_1[720:] + p3_1[720:]
     random.shuffle(test_data)
 
     train_data = temp_train_data + n4_1 + p4_1
