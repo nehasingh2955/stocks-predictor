@@ -1,9 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 import nlp_test
 import graph
 import os
 import datetime
 import json
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 
@@ -32,7 +34,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     class Meta:
         fields = ('username', 'password', 'companies')
-
+ 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
@@ -88,7 +90,7 @@ def update_user_companies(username):
 
     return user_schema.jsonify(user)
 
-@app.route('user/<username>/delete', methods=['PUT'])
+@app.route('/user/<username>/delete', methods=['PUT'])
 def delete_user_companies(username):
     user = User.query.get(username)
     company = request.json['company']
