@@ -32,9 +32,9 @@
 				<!-- Menu -->
 					<nav id="menu">
 						<h2>Menu</h2>
-						<ul>
+						<ul id="menu_ul">
 							<li><a href="/">Home</a></li>
-							<li><a href="/aapl">Apple</a></li>
+							<!-- <li><a href="/aapl">Apple</a></li>
 							<li><a href="/uber">Uber</a></li>
 							<li><a href="/lyft">Lyft</a></li>
 							<li><a href="/facebook">Facebook</a></li>
@@ -46,7 +46,16 @@
 							<li><a href="/twitter">Twitter</a></li>
 							<li><a href="/snap">Snap Inc.</a></li>
 							<li><a href="/salesforce">Square</a></li>
-							<li><a href="/splunk">Splunk</a></li>
+							<li><a href="/splunk">Splunk</a></li> -->
+							<script>
+								var l = ({{ list|tojson }});
+								var menu_ul = document.getElementById("menu_ul");
+								var myHTML = '';
+								for (var i = 0; i < l.length; i++) {
+									myHTML += '<li><a href="/' + l[i][0] + '">' + l[i][0] + '</a></li>';
+								}
+								menu_ul.innerHTML += myHTML;
+							</script>
 						</ul>
 					</nav>
 

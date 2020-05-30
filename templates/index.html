@@ -32,9 +32,9 @@
 				<!-- Menu -->
 					<nav id="menu">
 						<h2>Menu</h2>
-						<ul>
+						<ul id="menu_ul">
 							<li><a href="/">Home</a></li>
-							<li><a href="/aapl">Apple</a></li>
+<!-- 							<li><a href="/aapl">Apple</a></li>
 							<li><a href="/uber">Uber</a></li>
 							<li><a href="/lyft">Lyft</a></li>
 							<li><a href="/facebook">Facebook</a></li>
@@ -46,7 +46,17 @@
 							<li><a href="/twitter">Twitter</a></li>
 							<li><a href="/snap">Snap Inc.</a></li>
 							<li><a href="/salesforce">Salesforce</a></li>
-							<li><a href="/splunk">Splunk</a></li>
+							<li><a href="/splunk">Splunk</a></li> -->
+
+							<script>
+								var l = ({{ list|tojson }});
+								var menu_ul = document.getElementById("menu_ul");
+								var myHTML = '';
+								for (var i = 0; i < l.length; i++) {
+									myHTML += '<li><a href="/' + l[i][0] + '">' + l[i][0] + '</a></li>';
+								}
+								menu_ul.innerHTML += myHTML;
+							</script>
 						</ul>
 					</nav>
 
@@ -57,8 +67,18 @@
 								<h1>Stocks Predictor</h1>
 								<p>A tool to predict future stock prices for various tech companies i.e. Google, Tesla, Amazon, Uber etc. Price is predicted by performing sentiment analysis using a Naive Bayes Classifier and the natural language toolkit along with a non-linear regression model on a stock's one month price chart. Using <a href="https://newsapi.org/">News API</a> to get relevant news and <a href="https://stocknewsapi.com/">Stock News API</a> to get training data. The source code can be found <a href="https://github.com/raymondmengji/stocks-predictor">here</a>.</p>
 							</header>
-							<section class="tiles">
-								<article class="style1">
+							<section class="tiles" id="tiles">
+
+								<script>
+									var l = ({{ list|tojson }});
+									var tiles = document.getElementById("tiles");
+									var myHTML = '';
+									for (var i = 0; i < l.length; i++) {
+										myHTML += '<article><span class="image"><img src="../static/images/' + l[i][0].toLowerCase() + '.jpeg" alt="" /></span><a href="/' + l[i][0] + '"><h2>' + l[i][0] + '</h2><div class="content"><p>Generate ' + l[i][0] + ' Stock Prediction Model for {{ date }}</p></div></a></article>';
+									}
+									tiles.innerHTML = myHTML;
+								</script>
+								<!-- <article class="style1">
 									<span class="image">
 										<img src="../static/images/apple.jpeg" alt="" />
 									</span>
@@ -211,7 +231,7 @@
 											<p>Generate Splunk Stock Prediction Model for {{ date }}</p>
 										</div>
 									</a>
-								</article>
+								</article> -->
 							</section>
 						</div>
 					</div>

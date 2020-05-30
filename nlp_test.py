@@ -237,7 +237,8 @@ def main(name_of_company, classifier):
     to_return = []
 
     #company_ticker = "FB"
-    company = name_of_company
+    company = name_of_company.lower()
+    print("Company: ", company, len(company))
 
     import requests
     url = ('https://newsapi.org/v2/everything?q=' + company + '&language=en&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
@@ -257,7 +258,6 @@ def main(name_of_company, classifier):
             links.append(a['url'])
 
 
-
     positive = 0
     negative = 0
 
@@ -273,6 +273,8 @@ def main(name_of_company, classifier):
             positive += 1
             to_return.append((titles[i], links[i], "Positive"))
     #to_return += "\n" + "pos:neg " + str(positive) + ":" + str(negative)
+
+    print(positive, negative)
 
     return (to_return, positive, negative)
 
