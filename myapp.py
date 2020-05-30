@@ -3,8 +3,127 @@ import nlp_test
 import graph
 import os
 import datetime
+import json
 
 app = Flask(__name__)
+
+#database start--------------------------------------------------------
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+ma = Marshmallow(app)
+
+class User(db.Model):
+    username = db.Column(db.String, primary_key=True, unique=True)
+    password = db.Column(db.String)
+    companies = db.Column(db.String)
+
+    def __init__(self, username, password, companies):
+        self.username = username
+        self.password = password
+        self.companies = companies
+
+
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('username', 'password', 'companies')
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+@app.route('/user', methods=['POST'])
+def add_user():
+    username = request.json['username']
+    password = request.json['password']
+    companies = request.json['companies']
+
+    new_user = User(username, password, companies)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return user_schema.jsonify(new_user)
+
+@app.route('/user', methods=['GET'])
+def get_users():
+    all_users = User.query.all()
+    result = users_schema.dump(all_users)
+    return jsonify(result)
+
+@app.route('/user/<username>', methods=['GET'])
+def get_user(username):
+    user = User.query.get(username)
+    return user_schema.jsonify(user)
+
+@app.route('/user/<username>', methods=['PUT'])
+def update_user(username):
+    user = User.query.get(username)
+    username = request.json['username']
+    password = request.json['password']
+    companies = request.json['companies']
+
+    user.username = username
+    user.password = password
+    user.companies = companies
+
+    db.session.commit()
+
+    return user_schema.jsonify(user)
+
+@app.route('/user/<username>/add', methods=['PUT'])
+def update_user_companies(username):
+    user = User.query.get(username)
+    company = request.json['company']
+
+    user_list = json.loads(user.companies)
+    user_list.append(company)
+    user.companies = json.dumps(user_list)
+
+    db.session.commit()
+
+    return user_schema.jsonify(user)
+
+@app.route('user/<username>/delete', methods=['PUT'])
+def delete_user_companies(username):
+    user = User.query.get(username)
+    company = request.json['company']
+
+    user_list = json.loads(user.companies)
+    if company in user_list:
+        user_list.remove(company)
+    user.companies = json.dumps(user_list)
+
+    db.session.commit()
+
+    return user_schema.jsonify(user)
+
+
+
+@app.route('/user/<username>', methods=['DELETE'])
+def delete_user(username):
+    user = User.query.get(username)
+    db.session.delete(user)
+    db.session.commit()
+    return user_schema.jsonify(user)
+
+
+#user should not have this power
+@app.route('/user', methods=['DELETE'])
+def delete_all():
+    meta = db.metadata
+    for table in reversed(meta.sorted_tables):
+        db.session.execute(table.delete())
+    db.session.commit()
+    all_users = User.query.all()
+    result = users_schema.dump(all_users)
+    return jsonify(result)
+
+#-----------------------------------------------------------------------------
 
 def predict_value(calculated_val, positive, negative):
     return calculated_val + (positive/calculated_val) - (negative/calculated_val)
@@ -39,6 +158,7 @@ def convert_output(output, positive, negative):
 classifier = None
 runOnce = True
 accuracy = ""
+
 
 @app.route("/")
 def home():
