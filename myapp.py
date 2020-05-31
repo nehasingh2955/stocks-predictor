@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
 import nlp_test
 import graph
 import os
@@ -164,7 +164,7 @@ def convert_output(output, positive, negative):
 classifier = None
 runOnce = True
 accuracy = ""
-user = None
+
 username = None
 user_list = None
 
@@ -172,19 +172,36 @@ user_list = None
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        global username
+        global user_list
+        entered_username = request.form['username']
+        entered_password = request.form['password']
 
-        user = get_user(username)
-        #check if user exists:
-        try:
-            if password == user.password:
-                #user exists and correct pw
+        temp_user = User.query.get(entered_username)
+
+        if temp_user is not None:
+            print("Entered password: ", entered_password)
+            print("Correct password: ", temp_user.password)
+            if entered_password == temp_user.password:
+                username = temp_user.username
+                print(temp_user.companies)
+                user_list = json.loads(temp_user.companies)
+                return redirect(url_for('home'))
             else:
-                #wrong pw
-        except:
+                return redirect(url_for('login'))
+        else:
             return redirect(url_for('login'))
+        
     return render_template('login.html')
+
+@app.route("/logout")
+def logout():
+    global username
+    global user_list
+
+    username = None
+    user_list = None
+    return redirect(url_for('home'))
 
 
 
@@ -193,12 +210,13 @@ def home():
     global runOnce
     global classifier
     global accuracy
-    global user
+    global username
     global user_list
 
-    user = User.query.get("guest")
-    username = user.username
-    user_list = json.loads(user.companies)
+    if username == None and user_list == None:
+        user = User.query.get("guest")
+        username = user.username
+        user_list = json.loads(user.companies)
 
     if runOnce:
         tup = nlp_test.train_model()
@@ -263,17 +281,6 @@ def getinfo(company):
         return render_template('generic.html', name=company + " Prediction", output=output, 
             accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src, list=user_list, username=username)
     else:
-        # today = datetime.date.today()
-
-        # day_of_week = today.weekday()
-        # if day_of_week >= 4:
-        #     delta = 7 - day_of_week
-        # else:
-        #     delta = 1
-
-        # tmrw = today + datetime.timedelta(days=delta)
-        # d = tmrw.strftime("%B %d, %Y")
-        # return redirect(url_for('home', date=d, list=user_list))
         return redirect(url_for('home'))
 
 
