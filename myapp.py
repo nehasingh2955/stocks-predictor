@@ -129,6 +129,8 @@ def delete_all():
 
 #-----------------------------------------------------------------------------
 
+#helper analysis methods------------------------------------------------------
+
 def predict_value(calculated_val, positive, negative):
     return calculated_val + (positive/calculated_val) - (negative/calculated_val)
 
@@ -157,13 +159,33 @@ def convert_output(output, positive, negative):
     
     return to_return
 
-
+#-----------------------------------------------------------------------------------
 
 classifier = None
 runOnce = True
 accuracy = ""
 user = None
+username = None
 user_list = None
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = get_user(username)
+        #check if user exists:
+        try:
+            if password == user.password:
+                #user exists and correct pw
+            else:
+                #wrong pw
+        except:
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
 
 
 @app.route("/")
@@ -175,8 +197,8 @@ def home():
     global user_list
 
     user = User.query.get("guest")
+    username = user.username
     user_list = json.loads(user.companies)
-    print(user_list)
 
     if runOnce:
         tup = nlp_test.train_model()
@@ -193,7 +215,7 @@ def home():
 
     tmrw = today + datetime.timedelta(days=delta)
     d = tmrw.strftime("%B %d, %Y")
-    return render_template('index.html', date=d, list=user_list)
+    return render_template('index.html', date=d, list=user_list, username=username)
 
 # @app.route("/<company>")
 # def showinfo(company):
@@ -239,19 +261,21 @@ def getinfo(company):
         predicted_value = "{:.2f}".format(predicted_value)
 
         return render_template('generic.html', name=company + " Prediction", output=output, 
-            accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src, list=user_list)
+            accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src, list=user_list, username=username)
     else:
-        today = datetime.date.today()
+        # today = datetime.date.today()
 
-        day_of_week = today.weekday()
-        if day_of_week >= 4:
-            delta = 7 - day_of_week
-        else:
-            delta = 1
+        # day_of_week = today.weekday()
+        # if day_of_week >= 4:
+        #     delta = 7 - day_of_week
+        # else:
+        #     delta = 1
 
-        tmrw = today + datetime.timedelta(days=delta)
-        d = tmrw.strftime("%B %d, %Y")
-        return redirect(url_for('home', date=d, list=user_list))
+        # tmrw = today + datetime.timedelta(days=delta)
+        # d = tmrw.strftime("%B %d, %Y")
+        # return redirect(url_for('home', date=d, list=user_list))
+        return redirect(url_for('home'))
+
 
 
 
