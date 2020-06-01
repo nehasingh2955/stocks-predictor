@@ -194,6 +194,33 @@ def login():
         
     return render_template('login.html')
 
+@app.route("/signup", methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        global username
+        global user_list
+        entered_username = request.form['username']
+        entered_password = request.form['password']
+        entered_confirm_password = request.form['confirm_password']
+
+        if User.query.get(entered_username) != None:
+            return redirect(url_for('signup'))
+
+        if entered_password != entered_confirm_password:
+            return redirect(url_for('signup'))
+
+        default_companies = User.query.get("guest").companies
+
+        new_user = User(entered_username, entered_password, default_companies)
+        db.session.add(new_user)
+        db.session.commit()
+
+        username = entered_username
+        user_list = json.loads(default_companies)
+        return redirect(url_for('home'))
+    return render_template('signup.html')
+
+
 @app.route("/logout")
 def logout():
     global username

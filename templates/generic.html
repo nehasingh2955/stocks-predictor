@@ -56,8 +56,19 @@
 								}
 								menu_ul.innerHTML += myHTML;
 							</script>
-							<li><a href="/login">Login</a>></li>
-							<li><a href="/logout">Logout</a>></li>
+
+							<script>
+								var l = '{{ username }}';
+								var menu_ul = document.getElementById("menu_ul");
+								var result = l.localeCompare("guest");
+								if (result == 0) {
+									menu_ul.innerHTML += '<li><a href="/login">Login</a></li>';
+								}
+								else {
+									menu_ul.innerHTML += '<li><a href="/logout">Logout</a></li>';
+								}
+							</script>
+
 						</ul>
 					</nav>
 
