@@ -66,6 +66,7 @@
 									menu_ul.innerHTML += '<li><a href="/login">Login</a></li>';
 								}
 								else {
+									menu_ul.innerHTML += '<li><a href="/profile">Profile</a></li>';
 									menu_ul.innerHTML += '<li><a href="/logout">Logout</a></li>';
 								}
 							</script>
@@ -87,7 +88,7 @@
 									var tiles = document.getElementById("tiles");
 									var myHTML = '';
 									for (var i = 0; i < l.length; i++) {
-										myHTML += '<article><span class="image"><img src="../static/images/' + l[i][0].toLowerCase() + '.jpeg" alt="" /></span><a href="/' + l[i][0] + '"><h2>' + l[i][0] + '</h2><div class="content"><p>Generate ' + l[i][0] + ' Stock Prediction Model for {{ date }}</p></div></a></article>';
+										myHTML += '<article><span class="image"><img src="../static/images/' + l[i][0].toLowerCase() + '.jpeg" alt="" onerror="this.src=\'../static/images/default.jpeg\';"/></span><a href="/' + l[i][0] + '"><h2>' + l[i][0] + '</h2><div class="content"><p>Generate ' + l[i][0] + ' Stock Prediction Model for {{ date }}</p></div></a></article>';
 									}
 									tiles.innerHTML = myHTML;
 								</script>

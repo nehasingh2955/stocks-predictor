@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ username }}'s Profile</title>
+</head>
+<body>
+    <ul id="company_ul">
+        <script type="text/javascript">
+            var l = ({{ list |tojson }});
+            var company_ul = document.getElementById("company_ul");
+            var myHTML = '';
+            for (var i = 0; i < l.length; i++) {
+                myHTML += '<li><span>' + l[i][0] + ' <a href="/delete/' + l[i][0] + '"><img src="../static/images/x.svg" alt=""/></a></span></li>';
+            }
+            company_ul.innerHTML = myHTML;
+        </script>
+    </ul>
+</body>
+</html>

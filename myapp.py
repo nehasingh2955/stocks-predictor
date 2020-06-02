@@ -8,6 +8,7 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import yfinance as yf
+import hashlib
 
 app = Flask(__name__)
 
@@ -178,11 +179,12 @@ def login():
         entered_password = request.form['password']
 
         temp_user = User.query.get(entered_username)
+        hashed_password = hashlib.md5(entered_password.encode()).hexdigest()
 
         if temp_user is not None:
             print("Entered password: ", entered_password)
             print("Correct password: ", temp_user.password)
-            if entered_password == temp_user.password:
+            if hashed_password == temp_user.password:
                 username = temp_user.username
                 print(temp_user.companies)
                 user_list = json.loads(temp_user.companies)
@@ -209,9 +211,11 @@ def signup():
         if entered_password != entered_confirm_password:
             return redirect(url_for('signup'))
 
+        hashed_password = hashlib.md5(entered_password.encode()).hexdigest()
+
         default_companies = User.query.get("guest").companies
 
-        new_user = User(entered_username, entered_password, default_companies)
+        new_user = User(entered_username, hashed_password, default_companies)
         db.session.add(new_user)
         db.session.commit()
 
@@ -230,6 +234,35 @@ def logout():
     user_list = None
     return redirect(url_for('home'))
 
+@app.route("/profile")
+def profile():
+    global username
+    global user_list
+    if username == "guest":
+        #change to page not found
+        return redirect(url_for('home'))
+    else:
+        return render_template('profile.html', username=username, list=user_list)
+
+@app.route("/delete/<company>")
+def delete_company(company):
+    global username
+    global user_list
+    if username == "guest":
+        #throw some error
+        print("error")
+    else:
+        user = User.query.get(username)
+        temp_list = json.loads(user.companies)
+        
+        for l in temp_list:
+            if company == l[0]:
+                temp_list.remove(l)
+                user_list = temp_list
+                user.companies = json.dumps(user_list)
+                db.session.commit()
+                return redirect(url_for('profile'))
+        return redirect(url_for('profile'))
 
 
 @app.route("/")
@@ -309,361 +342,6 @@ def getinfo(company):
             accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src, list=user_list, username=username)
     else:
         return redirect(url_for('home'))
-
-
-
-
-# @app.route("/aapl")
-# def appl():
-#     global classifier
-#     nlp_results = nlp_test.main("apple", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-
-#     tup = graph.graph("AAPL")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Apple Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/uber", methods=["GET"])
-# def uber():
-#     global classifier
-#     nlp_results = nlp_test.main("uber", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("UBER")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Uber Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/lyft")
-# def lyft():
-#     global classifier
-#     nlp_results = nlp_test.main("lyft", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("LYFT")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Lyft Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/facebook")
-# def facebook():
-#     global classifier
-#     nlp_results = nlp_test.main("facebook", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("FB")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Facebook Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/tesla")
-# def tesla():
-#     global classifier
-#     nlp_results = nlp_test.main("tesla", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("TSLA")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Tesla Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/google")
-# def google():
-#     global classifier
-#     nlp_results = nlp_test.main("google", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("GOOGL")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Google Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/amazon")
-# def amazon():
-#     global classifier
-#     nlp_results = nlp_test.main("amazon", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("AMZN")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Amazon Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/microsoft")
-# def microsoft():
-#     global classifier
-#     nlp_results = nlp_test.main("microsoft", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("MSFT")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Microsoft Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/nvidia")
-# def nvidia():
-#     global classifier
-#     nlp_results = nlp_test.main("nvidia", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("NVDA")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Nvidia Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/netflix")
-# def netflix():
-#     global classifier
-#     nlp_results = nlp_test.main("netflix", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("NFLX")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Netflix Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/twitter")
-# def twitter():
-#     global classifier
-#     nlp_results = nlp_test.main("twitter", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("TWTR")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Twitter Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/snap")
-# def snap():
-#     global classifier
-#     nlp_results = nlp_test.main("snap inc", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("SNAP")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Snap Inc. Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/salesforce")
-# def salesforce():
-#     global classifier
-#     nlp_results = nlp_test.main("salesforce", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("CRM")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Salesforce Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
-
-# @app.route("/splunk")
-# def splunk():
-#     global classifier
-#     nlp_results = nlp_test.main("Splunk", classifier)
-#     positive = nlp_results[1]
-#     negative = nlp_results[2]
-#     output = convert_output(nlp_results[0], positive, negative)
-#     tup = graph.graph("SPLK")
-#     plot_url = tup[0]
-#     coef = tup[1]
-#     x = tup[2] + 1
-#     calculated_val = calculate(coef, x)
-#     predicted_value = predict_value(calculated_val, positive, negative)
-
-#     prev_value = tup[3]
-#     if predicted_value > prev_value:
-#         img_src = "../static/images/trending-up.svg"
-#     elif predicted_value < prev_value:
-#         img_src = "../static/images/trending-down.svg"
-
-#     predicted_value = "{:.2f}".format(predicted_value)
-
-#     return render_template('generic.html', name="Splunk Prediction", output=output, 
-#         accuracy=accuracy, plot_url=plot_url, predicted_value=predicted_value, img_src=img_src)
 
 
 if __name__ == '__main__':
