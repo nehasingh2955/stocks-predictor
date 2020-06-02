@@ -264,6 +264,25 @@ def delete_company(company):
                 return redirect(url_for('profile'))
         return redirect(url_for('profile'))
 
+@app.route("/profile", methods=['POST'])
+def add_company():
+    if request.method == 'POST':
+        global username
+        global user_list
+        company_name = request.form['name']
+        stock_symbol = request.form['ticker']
+        if len(company_name) > 0 and len(stock_symbol) > 0:
+            l = [company_name, stock_symbol]
+            print(l)
+            user_list.append(l)
+
+            user = User.query.get(username)
+            user.companies = json.dumps(user_list)
+            db.session.commit()
+        else:
+            print("error handling")
+    return redirect(url_for('profile'))
+
 
 @app.route("/")
 def home():
