@@ -34,19 +34,6 @@
 						<h2>Menu</h2>
 						<ul id="menu_ul">
 							<li><a href="/">Home</a></li>
-							<!-- <li><a href="/aapl">Apple</a></li>
-							<li><a href="/uber">Uber</a></li>
-							<li><a href="/lyft">Lyft</a></li>
-							<li><a href="/facebook">Facebook</a></li>
-							<li><a href="/tesla">Tesla</a></li>
-							<li><a href="/amazon">Amazon</a></li>
-							<li><a href="/microsoft">Microsoft</a></li>
-							<li><a href="/nvidia">Nvidia</a></li>
-							<li><a href="/netflix">Netflix</a></li>
-							<li><a href="/twitter">Twitter</a></li>
-							<li><a href="/snap">Snap Inc.</a></li>
-							<li><a href="/salesforce">Square</a></li>
-							<li><a href="/splunk">Splunk</a></li> -->
 							<script>
 								var l = ({{ list|tojson }});
 								var menu_ul = document.getElementById("menu_ul");
@@ -80,10 +67,29 @@
 							<span class="image main"><img src="data:image/png;base64, {{ plot_url }}"></span>
 							<p>{{ accuracy|safe }}</p>
 							<p>{{ output|safe }}</p>
-							<p></p>
 						</div>
 					</div>
 
+				<!-- Footer -->
+                    <footer id="footer">
+                        <div class="inner">
+                        	<section>
+                        		<h2>Disclaimer</h2>
+                        		<p>
+                        			This is meant to be a fun project and users should not base their decisions off these predictions.
+                        		</p>
+                        	</section>
+                            <section>
+								<h2>Source Code</h2>
+								<ul class="icons">
+									<li><a href="https://github.com/raymondmengji/stocks-predictor" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+                            <ul class="copyright">
+                                <li>&copy; Raymond Ji. All rights reserved</li>
+                            </ul>
+                        </div>
+                    </footer>
 			</div>
 
 		<!-- Scripts -->

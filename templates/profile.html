@@ -2,29 +2,121 @@
 <html>
 <head>
     <title>{{ username }}'s Profile</title>
-    <link rel="stylesheet" href="../static/css/profile.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../static/css/main.css" />
+    <noscript><link rel="stylesheet" href="../static/css/noscript.css" /></noscript>
 </head>
-<body>
-    <ul id="company_ul">
-        <script type="text/javascript">
-            var l = ({{ list |tojson }});
-            var company_ul = document.getElementById("company_ul");
-            var myHTML = '';
-            for (var i = 0; i < l.length; i++) {
-                myHTML += '<li><a href="/delete/' + l[i][0] + '">' + l[i][0] + '</a></li>';
-            }
-            company_ul.innerHTML = myHTML;
-        </script>
-    </ul>
+    <body class="is-preload">
+        <!-- Wrapper -->
+            <div id="wrapper">
 
-    <form method="POST">
-        <label for="name">Company Name:</label>
-        <input type="text" id="name" name="name"><br><br>
-        <label for="ticker">Stock Symbol:</label>
-        <input type="text" id="ticker" name="ticker"><br><br>
-        <button type="submit">Add Company</button>
-    </form>
+                <!-- Header -->
+                    <header id="header">
+                        <div class="inner">
+                            <!-- Nav -->
+                                <nav>
+                                    <ul>
+                                        <li><a href="#menu">Menu</a></li>
+                                    </ul>
+                                </nav>
 
+                        </div>
+                    </header>
 
-</body>
+                <!-- Menu -->
+                    <nav id="menu">
+                        <h2>Menu</h2>
+                        <ul id="menu_ul">
+                            <li><a href="/">Home</a></li>
+                            <script>
+                                var l = ({{ list|tojson }});
+                                var menu_ul = document.getElementById("menu_ul");
+                                var myHTML = '';
+                                for (var i = 0; i < l.length; i++) {
+                                    myHTML += '<li><a href="/' + l[i][0] + '">' + l[i][0] + '</a></li>';
+                                }
+                                menu_ul.innerHTML += myHTML;
+                            </script>
+
+                            <script>
+                                var l = '{{ username }}';
+                                var menu_ul = document.getElementById("menu_ul");
+                                var result = l.localeCompare("guest");
+                                if (result == 0) {
+                                    menu_ul.innerHTML += '<li><a href="/login">Login</a></li>';
+                                }
+                                else {
+                                    menu_ul.innerHTML += '<li><a href="/profile">Profile</a></li>';
+                                    menu_ul.innerHTML += '<li><a href="/logout">Logout</a></li>';
+                                }
+                            </script>
+                        </ul>
+                    </nav>
+
+                <!-- Main -->
+                    <div id="main">
+                        <div class="inner">
+                            <header>
+                                <h1>Stocks Predictor</h1>
+                                <h2>{{ username }}'s Profile</h2>
+                            </header>
+                            <section class="tiles" id="tiles">
+                                <script>
+                                    var l = ({{ list|tojson }});
+                                    var tiles = document.getElementById("tiles");
+                                    var myHTML = '';
+                                    for (var i = 0; i < l.length; i++) {
+                                        myHTML += '<article><span class="image"><img src="../static/images/' + l[i][0].toLowerCase() + '.jpeg" alt="" onerror="this.src=\'../static/images/default.jpeg\';"/></span><a href="/delete/' + l[i][0] + '"><h2>' + l[i][0] + '</h2><div class="content"><p>Remove ' + l[i][0] + ' from my portfolio</p></div></a></article>';
+                                    }
+                                    tiles.innerHTML = myHTML;
+                                </script>
+                            </section>
+                            
+<!--                             <h2>Add a Company</h2>
+
+                            <form method="POST">
+                                <label for="name">Company Name:</label>
+                                <input type="text" id="name" name="name"><br><br>
+                                <label for="ticker">Stock Symbol:</label>
+                                <input type="text" id="ticker" name="ticker"><br><br>
+                                <button type="submit">Add Company</button>
+                            </form> -->
+                        </div>
+                    </div>
+                    <!-- Footer -->
+                    <footer id="footer">
+                        <div class="inner">
+                            <section>
+                                <h2>Add a Company</h2>
+                                <form method="POST">
+                                    <div class="fields">
+                                        <div class="field half">
+                                            <input type="text" name="name" id="name" placeholder="Company Name" />
+                                        </div>
+                                        <div class="field half">
+                                            <input type="text" name="ticker" id="ticker" placeholder="Stock Symbol" />
+                                        </div>
+                                    </div>
+                                    <ul class="actions">
+                                        <li><input type="submit" value="Add Company" class="primary" /></li>
+                                    </ul>
+                                </form>
+                            </section>
+                            <ul class="copyright">
+                                <li>&copy; Raymond Ji. All rights reserved</li>
+                            </ul>
+                        </div>
+                    </footer>
+            </div>
+        <!-- Scripts -->
+            <script src="../static/js/jquery.min.js"></script>
+            <script src="../static/js/browser.min.js"></script>
+            <script src="../static/js/breakpoints.min.js"></script>
+            <script src="../static/js/util.js"></script>
+            <script src="../static/js/main.js"></script>
+
+    </body>
 </html>
+
+    

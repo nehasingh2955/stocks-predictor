@@ -182,11 +182,8 @@ def login():
         hashed_password = hashlib.md5(entered_password.encode()).hexdigest()
 
         if temp_user is not None:
-            print("Entered password: ", entered_password)
-            print("Correct password: ", temp_user.password)
             if hashed_password == temp_user.password:
                 username = temp_user.username
-                print(temp_user.companies)
                 user_list = json.loads(temp_user.companies)
                 return redirect(url_for('home'))
             else:
@@ -273,7 +270,6 @@ def add_company():
         stock_symbol = request.form['ticker']
         if len(company_name) > 0 and len(stock_symbol) > 0:
             l = [company_name, stock_symbol]
-            print(l)
             user_list.append(l)
 
             user = User.query.get(username)
@@ -334,12 +330,10 @@ def getinfo(company):
             break
     if is_in:
         global classifier
-        print(company)
         nlp_results = nlp_test.main(company, classifier)
         positive = nlp_results[1]
         negative = nlp_results[2]
         output = convert_output(nlp_results[0], positive, negative)
-        print(output)
 
         tup = graph.graph(ticker)
         plot_url = tup[0]

@@ -34,20 +34,6 @@
 						<h2>Menu</h2>
 						<ul id="menu_ul">
 							<li><a href="/">Home</a></li>
-<!-- 							<li><a href="/aapl">Apple</a></li>
-							<li><a href="/uber">Uber</a></li>
-							<li><a href="/lyft">Lyft</a></li>
-							<li><a href="/facebook">Facebook</a></li>
-							<li><a href="/tesla">Tesla</a></li>
-							<li><a href="/amazon">Amazon</a></li>
-							<li><a href="/microsoft">Microsoft</a></li>
-							<li><a href="/nvidia">Nvidia</a></li>
-							<li><a href="/netflix">Netflix</a></li>
-							<li><a href="/twitter">Twitter</a></li>
-							<li><a href="/snap">Snap Inc.</a></li>
-							<li><a href="/salesforce">Salesforce</a></li>
-							<li><a href="/splunk">Splunk</a></li> -->
-
 							<script>
 								var l = ({{ list|tojson }});
 								var menu_ul = document.getElementById("menu_ul");
@@ -79,7 +65,7 @@
 							<header>
 								<h1>Stocks Predictor</h1>
 								<h2>Welcome {{ username }}</h2>
-								<p>This is a tool to predict future stock prices. Users can add and remove companies they want predictions for from their "portfolio". Price is predicted by performing sentiment analysis using a Naive Bayes Classifier and the natural language toolkit along with a non-linear regression model on a stock's one month price chart. Using <a href="https://newsapi.org/">News API</a> to get relevant news and <a href="https://stocknewsapi.com/">Stock News API</a> to get training data. The source code can be found <a href="https://github.com/raymondmengji/stocks-predictor">here</a>.</p>
+								<p>This is a tool to predict future stock prices. Users can add and remove companies they want predictions for from their "portfolio". Price is predicted by performing sentiment analysis using a Naive Bayes Classifier and the natural language toolkit along with a non-linear regression model on a stock's one month price chart. Using <a href="https://newsapi.org/">News API</a> to get relevant news and <a href="https://stocknewsapi.com/">Stock News API</a> to get training data.</p>
 							</header>
 							<section class="tiles" id="tiles">
 
@@ -92,164 +78,31 @@
 									}
 									tiles.innerHTML = myHTML;
 								</script>
-								<!-- <article class="style1">
-									<span class="image">
-										<img src="../static/images/apple.jpeg" alt="" />
-									</span>
-									<a href="/aapl">
-										<h2>Apple</h2>
-										<div class="content">
-											<p>Generate Apple Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style2">
-									<span class="image">
-										<img src="../static/images/uber.jpeg" alt="" />
-									</span>
-									<a href="/uber">
-										<h2>Uber</h2>
-										<div class="content">
-											<p>Generate Uber Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style3">
-									<span class="image">
-										<img src="../static/images/lyft.jpeg" alt="" />
-									</span>
-									<a href="/lyft">
-										<h2>Lyft</h2>
-										<div class="content">
-											<p>Generate Lyft Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style4">
-									<span class="image">
-										<img src="../static/images/facebook.jpeg" alt="" />
-									</span>
-									<a href="/facebook">
-										<h2>Facebook</h2>
-										<div class="content">
-											<p>Generate Facebook Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style5">
-									<span class="image">
-										<img src="../static/images/tesla.jpeg" alt="" />
-									</span>
-									<a href="/tesla">
-										<h2>Tesla</h2>
-										<div class="content">
-											<p>Generate Tesla Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style6">
-									<span class="image">
-										<img src="../static/images/google.jpeg" alt="" />
-									</span>
-									<a href="/google">
-										<h2>Google</h2>
-										<div class="content">
-											<p>Generate Google Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style7">
-									<span class="image">
-										<img src="../static/images/amazon.jpeg" alt="" />
-									</span>
-									<a href="/amazon">
-										<h2>Amazon</h2>
-										<div class="content">
-											<p>Generate Amazon Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style8">
-									<span class="image">
-										<img src="../static/images/microsoft.jpeg" alt="" />
-									</span>
-									<a href="/microsoft">
-										<h2>Microsoft</h2>
-										<div class="content">
-											<p>Generate Microsoft Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style9">
-									<span class="image">
-										<img src="../static/images/nvidia.jpeg" alt="" />
-									</span>
-									<a href="/nvidia">
-										<h2>Nvidia</h2>
-										<div class="content">
-											<p>Generate Nvidia Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style10">
-									<span class="image">
-										<img src="../static/images/netflix.jpeg" alt="" />
-									</span>
-									<a href="/netflix">
-										<h2>Netflix</h2>
-										<div class="content">
-											<p>Generate Netflix Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style11">
-									<span class="image">
-										<img src="../static/images/twitter.jpeg" alt="" />
-									</span>
-									<a href="/twitter">
-										<h2>Twitter</h2>
-										<div class="content">
-											<p>Generate Twitter Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style12">
-									<span class="image">
-										<img src="../static/images/snap.jpeg" alt="" />
-									</span>
-									<a href="/snap">
-										<h2>Snap Inc.</h2>
-										<div class="content">
-											<p>Generate Snap Inc. Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style13">
-									<span class="image">
-										<img src="../static/images/salesforce.jpeg" alt="" />
-									</span>
-									<a href="/salesforce">
-										<h2>Salesforce</h2>
-										<div class="content">
-											<p>Generate Salesforce Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article>
-								<article class="style14">
-									<span class="image">
-										<img src="../static/images/splunk.jpeg" alt="" />
-									</span>
-									<a href="/splunk">
-										<h2>Splunk</h2>
-										<div class="content">
-											<p>Generate Splunk Stock Prediction Model for {{ date }}</p>
-										</div>
-									</a>
-								</article> -->
 							</section>
 						</div>
 					</div>
 
+				<!-- Footer -->
+                    <footer id="footer">
+                        <div class="inner">
+                        	<section>
+                        		<h2>Disclaimer</h2>
+                        		<p>
+                        			This is meant to be a fun project and users should not base their decisions off these predictions.
+                        		</p>
+                        	</section>
+                            <section>
+								<h2>Source Code</h2>
+								<ul class="icons">
+									<li><a href="https://github.com/raymondmengji/stocks-predictor" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+                            <ul class="copyright">
+                                <li>&copy; Raymond Ji. All rights reserved</li>
+                            </ul>
+                        </div>
+                    </footer>
+			</div>
 
 		<!-- Scripts -->
 			<script src="../static/js/jquery.min.js"></script>
