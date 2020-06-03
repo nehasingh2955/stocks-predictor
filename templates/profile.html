@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>{{ username }}'s Profile</title>
+    <link rel="stylesheet" href="../static/css/profile.css" />
 </head>
 <body>
     <ul id="company_ul">
@@ -10,7 +11,7 @@
             var company_ul = document.getElementById("company_ul");
             var myHTML = '';
             for (var i = 0; i < l.length; i++) {
-                myHTML += '<li><span>' + l[i][0] + ' <a href="/delete/' + l[i][0] + '"><img src="../static/images/x.svg" alt=""/></a></span></li>';
+                myHTML += '<li><a href="/delete/' + l[i][0] + '">' + l[i][0] + '</a></li>';
             }
             company_ul.innerHTML = myHTML;
         </script>
@@ -23,5 +24,7 @@
         <input type="text" id="ticker" name="ticker"><br><br>
         <button type="submit">Add Company</button>
     </form>
+
+
 </body>
 </html>
