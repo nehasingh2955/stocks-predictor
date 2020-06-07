@@ -132,8 +132,8 @@ def delete_all():
 
 #helper analysis methods------------------------------------------------------
 
-def predict_value(calculated_val, positive, negative):
-    return calculated_val + (positive/calculated_val) - (negative/calculated_val)
+def predict_value(calculated_val, positive, negative, general_pos, general_neg):
+    return calculated_val + (positive/calculated_val) - (negative/calculated_val) + (general_pos / (general_neg + 1)) * 5
 
 def calculate(coef, x):
     l = len(coef) - 1
@@ -168,6 +168,8 @@ accuracy = ""
 
 username = None
 user_list = None
+general_pos = 0
+general_neg = 0
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -287,6 +289,8 @@ def home():
     global accuracy
     global username
     global user_list
+    global general_pos
+    global general_neg
 
     if username == None and user_list == None:
         user = User.query.get("guest")
@@ -298,6 +302,9 @@ def home():
         classifier = tup[0]
         accuracy = tup[1]
         runOnce = False
+        (general_pos, general_neg) = nlp_test.nasdaq(classifier)
+        print(general_pos, general_neg)
+    
     today = datetime.date.today()
 
     day_of_week = today.weekday()
@@ -340,7 +347,7 @@ def getinfo(company):
         coef = tup[1]
         x = tup[2] + 1
         calculated_val = calculate(coef, x)
-        predicted_value = predict_value(calculated_val, positive, negative)
+        predicted_value = predict_value(calculated_val, positive, negative, general_pos, general_neg)
 
 
         prev_value = tup[3]

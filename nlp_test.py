@@ -4,7 +4,7 @@ from nltk.tag import pos_tag
 from nltk.tokenize import word_tokenize
 from nltk import FreqDist, classify, NaiveBayesClassifier
 
-import re, string, random
+import re, string, random, requests
 
 def remove_noise(tweet_tokens, stop_words = ()):
 
@@ -225,6 +225,29 @@ def train_model():
     classifier = NaiveBayesClassifier.train(train_data)
     return (classifier, "Accuracy is: " + str(classify.accuracy(classifier, test_data)))
 
+def nasdaq(classifier):
+    nasdaq_url = ('https://newsapi.org/v2/everything?q=nasdaq&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
+    nasdaq_response = requests.get(nasdaq_url)
+
+    nasdaq_json = nasdaq_response.json()
+
+    titles = []
+    for a in nasdaq_json['articles']:
+        titles.append(a['title'])
+
+    nasdaq_pos = 0
+    nasdaq_neg = 0
+
+    for title in titles:
+        custom_tokens = remove_noise(word_tokenize(title.lower()))
+        result = classifier.classify(dict([token, True] for token in custom_tokens))
+
+        if result == "Negative":
+            nasdaq_neg += 1
+        else:
+            nasdaq_pos += 1
+    return (nasdaq_pos, nasdaq_neg)
+
 
 
 
@@ -235,7 +258,7 @@ def main(name_of_company, classifier):
     #company_ticker = "FB"
     company = name_of_company.lower()
 
-    import requests
+
     url = ('https://newsapi.org/v2/everything?q=' + company + '&language=en&apiKey=4ce944e3975f4c30a8f3e7ecbd542800')
     response = requests.get(url)
 
