@@ -11,9 +11,9 @@ Use `git clone https://github.com/raymondmengji/stocks-predictor.git` to clone t
 
 Navigate to the project directory in terminal and run `pip install -r requirements.txt` to install all dependencies used.
 
-Staying in the terminal, run `python3 myapp.py`
+Staying in the terminal, run `python3 myapp.py`.
 
-Navigate to `http://localhost:5000/` to access the web application
+Navigate to `http://localhost:5000/` to access the web application.
 
 ### Technologies Used
 
