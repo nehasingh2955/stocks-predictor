@@ -12,6 +12,7 @@ joblib==0.16.0
 kiwisolver==1.2.0
 MarkupSafe==1.1.1
 marshmallow==3.6.1
+marshmallow-sqlalchemy==0.23.1
 matplotlib==3.2.2
 multitasking==0.0.9
 nltk==3.5
