@@ -3,6 +3,13 @@
 Creating a stocks predictor by performing sentiment analaysis using a Naive Bayes Classifier and the natural language toolkit.
 Using News API (https://newsapi.org/) to get relevant news and Stock News API (https://stocknewsapi.com/) to get training data.
 
+## Screenshots
+![Screenshot1](/img/img1.png?raw=true)
+
+![Screenshot2](/img/img2.png?raw=true)
+
+![Screenshot3](/img/img3.png?raw=true)
+
 ## Check it out
 
 ### Download and Run
