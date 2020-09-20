@@ -16,6 +16,8 @@ Using News API (https://newsapi.org/) to get relevant news and Stock News API (h
 
 Use `git clone https://github.com/raymondmengji/stocks-predictor.git` to clone the project in the directory of your choice.
 
+Optional: make a virtual environment! `run python3 -m venv env` and `. env/bin/activate`.
+
 Navigate to the project directory in terminal and run `pip install -r requirements.txt` to install all dependencies used.
 
 Staying in the terminal, run `python3 myapp.py`.
